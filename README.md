@@ -5,6 +5,9 @@ A responsive web application that helps families quickly find swim schools, expl
 Designed to provide an intuitive user experience, the application makes it easier for parents to compare swimming programs and access important information before enrolling.
 
 ---
+## Live Demo
+
+🌐 https://cfabish.github.io/swim-school-locator/
 
 ## Features
 
