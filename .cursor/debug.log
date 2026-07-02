@@ -1,0 +1,7 @@
+{"location":"index.html:58","message":"Script initialization started","data":{"timestamp":1767161639347},"timestamp":1767161639347,"sessionId":"debug-session","hypothesisId":"A"}
+{"location":"index.html:62","message":"Getting DOM elements","data":{"elements":["schoolSelect","goBtn","schoolDescription"]},"timestamp":1767161639349,"sessionId":"debug-session","hypothesisId":"A"}
+{"location":"index.html:92","message":"Adding click event listener","data":{"target":"goBtn"},"timestamp":1767161639352,"sessionId":"debug-session","hypothesisId":"C"}
+{"location":"index.html:105","message":"Adding keypress event listener","data":{"target":"schoolSelect"},"timestamp":1767161639353,"sessionId":"debug-session","hypothesisId":"D"}
+{"location":"index.html:115","message":"Script initialization completed","data":{"timestamp":1767161639354},"timestamp":1767161639354,"sessionId":"debug-session","hypothesisId":"A"}
+{"location":"index.html:71","message":"Adding change event listener","data":{"target":"schoolSelect"},"timestamp":1767161639351,"sessionId":"debug-session","hypothesisId":"B"}
+{"location":"index.html:67","message":"DOM elements retrieved","data":{"selectFound":true,"goBtnFound":true,"descriptionFound":true},"timestamp":1767161639351,"sessionId":"debug-session","hypothesisId":"A"}

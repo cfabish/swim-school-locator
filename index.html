@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swim School Selector</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Video Background -->
+    <video autoplay muted loop playsinline id="bg-video">
+        <source src="https://videos.pexels.com/video-files/853877/853877-hd_1920_1080_30fps.mp4" type="video/mp4">
+        <source src="https://videos.pexels.com/video-files/4825567/4825567-hd_1920_1080_25fps.mp4" type="video/mp4">
+    </video>
+    
+    <!-- Overlay for better text readability -->
+    <div class="video-overlay"></div>
+    
+    <header>
+        <h1>Swim School Locator</h1>
+        <p class="subtitle">Select from the best swim schools in your area</p>
+    </header>
+
+    <main>
+        <div class="dropdown-container">
+            <label for="schoolSelect" class="dropdown-label">Select a Swim School:</label>
+            <div class="dropdown-wrapper">
+                <select id="schoolSelect" class="school-dropdown">
+                    <option value="" selected disabled>Choose a swim school...</option>
+                    <option value="https://www.britishswimschool.com/" data-description="Nationally recognized swim school with locations nationwide">British Swim School</option>
+                    <option value="https://www.aquatots.com/" data-description="Specializing in infant and toddler swimming lessons">Aqua Tots</option>
+                    <option value="https://emlerswimschool.com/" data-description="Family-owned swim school with experienced instructors">Elmer Swim School</option>
+                    <option value="https://www.safesplash.com/" data-description="Fun and safe swimming programs for children">Safesplash Swim School</option>
+                </select>
+                <button id="goBtn" class="go-button" disabled>Visit Website</button>
+            </div>
+            <div id="schoolDescription" class="school-description"></div>
+        </div>
+
+        <section class="features">
+            <h2>Why Choose Our Swim Schools?</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="icon">🏊</div>
+                    <h3>Professional Instructors</h3>
+                    <p>Certified and experienced teachers</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">👶</div>
+                    <h3>All Ages Welcome</h3>
+                    <p>From infants to adults</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🏆</div>
+                    <h3>Proven Methods</h3>
+                    <p>Verified teaching techniques</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-link active">Home</a>
+        <a href="reviews.html" class="nav-link">Reviews</a>
+        <a href="map.html" class="nav-link">Map</a>
+    </nav>
+
+    <footer>
+        <p>&copy; 2024 Swim School Selector. Connecting families with quality swimming education.</p>
+    </footer>
+
+    <!-- Help Bot -->
+    <div class="help-bot">
+        <div class="help-chat" id="helpChat">
+            <div class="help-header">
+                <h3>🏊 Swim School Helper</h3>
+                <button class="help-close" id="helpClose">&times;</button>
+            </div>
+            <div class="help-messages" id="helpMessages">
+                <div class="help-message bot-message">
+                    <div class="message-bubble">
+                        Hi! I'm your Swim School Helper. I can help you find the perfect swim school, answer questions about programs, or assist with writing reviews. How can I help you today?
+                    </div>
+                </div>
+            </div>
+            <div class="quick-actions">
+                <button class="quick-action-btn" data-action="schools">Tell me about the schools</button>
+                <button class="quick-action-btn" data-action="programs">What programs are available?</button>
+                <button class="quick-action-btn" data-action="review">Help me write a review</button>
+                <button class="quick-action-btn" data-action="contact">Need contact information</button>
+            </div>
+            <div class="help-input">
+                <input type="text" id="helpInput" placeholder="Type your question...">
+                <button id="helpSend">Send</button>
+            </div>
+        </div>
+        <div class="help-bubble" id="helpBubble">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12c0 1.54.36 3 .97 4.29L1 23l6.71-1.97C9.02 21.64 10.46 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-1.3 0-2.54-.25-3.68-.7l-4.27 1.26 1.26-4.27C4.25 14.54 4 13.3 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8z"/>
+                <path d="M8 12h8v2H8z"/>
+                <path d="M8 8h8v2H8z"/>
+                <path d="M8 16h5v2H8z"/>
+            </svg>
+        </div>
+    </div>
+
+    <script>
+        // #region agent log
+        fetch('http://127.0.0.1:7246/ingest/d2dfdb2d-d831-41e2-b943-500f5d825a41',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.html:58',message:'Script initialization started',data:{timestamp:Date.now()},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A'})}).catch(()=>{});
+        // #endregion
+        
+        // Enhanced dropdown functionality
+        // #region agent log
+        fetch('http://127.0.0.1:7246/ingest/d2dfdb2d-d831-41e2-b943-500f5d825a41',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.html:62',message:'Getting DOM elements',data:{elements:['schoolSelect','goBtn','schoolDescription']},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A'})}).catch(()=>{});
+        // #endregion
+        const select = document.getElementById('schoolSelect');
+        const goBtn = document.getElementById('goBtn');
+        const description = document.getElementById('schoolDescription');
+
+        // #region agent log
+        fetch('http://127.0.0.1:7246/ingest/d2dfdb2d-d831-41e2-b943-500f5d825a41',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.html:67',message:'DOM elements retrieved',data:{selectFound:!!select,goBtnFound:!!goBtn,descriptionFound:!!description},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A'})}).catch(()=>{});
+        // #endregion
+
+        // Update button state and description when selection changes
+        // #region agent log
+        fetch('http://127.0.0.1:7246/ingest/d2dfdb2d-d831-41e2-b943-500f5d825a41',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.html:71',message:'Adding change event listener',data:{target:'schoolSelect'},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'B'})}).catch(()=>{});
+        // #endregion
+        select.addEventListener('change', function() {
+            // #region agent log
+            fetch('http://127.0.0.1:7246/ingest/d2dfdb2d-d831-41e2-b943-500f5d825a41',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.html:74',message:'Change event triggered',data:{selectedIndex:select.selectedIndex},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'B'})}).catch(()=>{});
+            // #endregion
+            const selectedOption = select.options[select.selectedIndex];
+            const url = selectedOption.value;
+            const desc = selectedOption.getAttribute('data-description') || '';
+            
+            // #region agent log
+            fetch('http://127.0.0.1:7246/ingest/d2dfdb2d-d831-41e2-b943-500f5d825a41',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.html:79',message:'Processing selection',data:{url:url,hasDescription:!!desc},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'B'})}).catch(()=>{});
+            // #endregion
+            
+            // Enable/disable button based on selection
+            goBtn.disabled = !url;
+            
+            // Update description
+            if (desc) {
+                description.textContent = desc;
+                description.style.display = 'block';
+            } else {
+                description.style.display = 'none';
+            }
+        });
+
+        // Navigate to selected school when button is clicked
+        // #region agent log
+        fetch('http://127.0.0.1:7246/ingest/d2dfdb2d-d831-41e2-b943-500f5d825a41',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.html:92',message:'Adding click event listener',data:{target:'goBtn'},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'C'})}).catch(()=>{});
+        // #endregion
+        goBtn.addEventListener('click', function() {
+            // #region agent log
+            fetch('http://127.0.0.1:7246/ingest/d2dfdb2d-d831-41e2-b943-500f5d825a41',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.html:95',message:'Click event triggered',data:{url:select.value},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'C'})}).catch(()=>{});
+            // #endregion
+            const url = select.value;
+            if (url) {
+                // #region agent log
+                fetch('http://127.0.0.1:7246/ingest/d2dfdb2d-d831-41e2-b943-500f5d825a41',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.html:99',message:'Opening URL',data:{url:url},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'C'})}).catch(()=>{});
+                // #endregion
+                window.open(url, '_blank', 'noopener,noreferrer');
+            }
+        });
+
+        // Allow Enter key to trigger navigation
+        // #region agent log
+        fetch('http://127.0.0.1:7246/ingest/d2dfdb2d-d831-41e2-b943-500f5d825a41',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.html:105',message:'Adding keypress event listener',data:{target:'schoolSelect'},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'D'})}).catch(()=>{});
+        // #endregion
+        select.addEventListener('keypress', function(e) {
+            // #region agent log
+            fetch('http://127.0.0.1:7246/ingest/d2dfdb2d-d831-41e2-b943-500f5d825a41',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.html:108',message:'Keypress event triggered',data:{key:e.key,hasValue:!!select.value},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'D'})}).catch(()=>{});
+            // #endregion
+            if (e.key === 'Enter' && select.value) {
+                // #region agent log
+                fetch('http://127.0.0.1:7246/ingest/d2dfdb2d-d831-41e2-b943-500f5d825a41',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.html:111',message:'Enter key pressed with value, triggering click',data:{url:select.value},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'D'})}).catch(()=>{});
+                // #endregion
+                goBtn.click();
+            }
+        });
+
+        // #region agent log
+        fetch('http://127.0.0.1:7246/ingest/d2dfdb2d-d831-41e2-b943-500f5d825a41',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'index.html:115',message:'Script initialization completed',data:{timestamp:Date.now()},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A'})}).catch(()=>{});
+        // #endregion
+
+        // Help Bot Functionality
+        const helpBubble = document.getElementById('helpBubble');
+        const helpChat = document.getElementById('helpChat');
+        const helpClose = document.getElementById('helpClose');
+        const helpInput = document.getElementById('helpInput');
+        const helpSend = document.getElementById('helpSend');
+        const helpMessages = document.getElementById('helpMessages');
+
+        // Toggle help chat
+        helpBubble.addEventListener('click', function() {
+            helpChat.classList.toggle('active');
+            if (helpChat.classList.contains('active')) {
+                helpInput.focus();
+            }
+        });
+
+        // Close help chat
+        helpClose.addEventListener('click', function() {
+            helpChat.classList.remove('active');
+        });
+
+        // Quick action buttons
+        document.querySelectorAll('.quick-action-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const action = this.getAttribute('data-action');
+                handleQuickAction(action);
+            });
+        });
+
+        function handleQuickAction(action) {
+            let response = '';
+            
+            switch(action) {
+                case 'schools':
+                    response = 'We have 4 excellent swim schools:\n\n🏊 British Swim School - Focus on water safety and survival skills\n👶 Aqua Tots - Specializes in infant and toddler swimming\n🏆 Emler Swim School - Comprehensive curriculum with heated pools\n💦 Safesplash - Flexible scheduling and family-friendly programs\n\nWhich school interests you most? I can provide specific contact details!';
+                    break;
+                case 'programs':
+                    response = 'Our schools offer various programs:\n\n👶 Parent & Baby (2-36 months)\n👧 Toddler Classes (3 years)\n👦 Kids Lessons (4+ years)\n🏊 Advanced Training (5+ years)\n👨‍👩‍👧‍👦 Adult Swimming Lessons\n🎉 Swim Birthday Parties\n\nEach school has unique approaches - would you like details about a specific program or contact information for enrollment?';
+                    break;
+                case 'review':
+                    response = 'I\'d be happy to help you write a great review! Here are some tips:\n\n✨ Mention specific instructors or classes\n📅 Include how long you\'ve been attending\n🎯 Talk about progress your child has made\n💰 Comment on value for money\n🏊 Mention facilities (cleanliness, temperature, etc.)\n\nClick the "Write a Review" button to get started, and I can help you craft the perfect review!';
+                    break;
+                case 'contact':
+                    response = 'I can provide contact information for any school! Which school would you like contact details for?\n\n🏊 British Swim School\n👶 Aqua Tots\n🏆 Emler Swim School\n💦 Safesplash\n\nJust let me know which one and I\'ll give you their phone number, website, and enrollment information!';
+                    break;
+            }
+            
+            addBotMessage(response);
+        }
+
+        // Send message
+        function sendMessage() {
+            const message = helpInput.value.trim();
+            if (message) {
+                addUserMessage(message);
+                helpInput.value = '';
+                
+                // Simulate bot response
+                setTimeout(() => {
+                    const response = generateBotResponse(message);
+                    addBotMessage(response);
+                }, 1000);
+            }
+        }
+
+        helpSend.addEventListener('click', sendMessage);
+        helpInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        function generateBotResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            if (lowerMessage.includes('british')) {
+                return '🏊 **British Swim School**\n\n📞 **Phone**: <span class="phone-link" onclick="window.location.href=\'tel:1-800-795-7946\'">1-800-795-7946</span>\n🌐 **Website**: <a href="https://www.britishswimschool.com/" target="_blank">www.britishswimschool.com</a>\n📧 **Email**: <a href="mailto:info@britishswimschool.com">info@britishswimschool.com</a>\n\n**Programs**: Water safety focus, survival skills first, then swimming techniques. Great for beginners and nervous swimmers.\n\n**Ages**: All ages (3 months to adults)\n**Class Size**: 4-6 students\n**Specialties**: Survival skills, nervous swimmers\n\nWould you like enrollment information or class schedules?';
+            } else if (lowerMessage.includes('aqua tots')) {
+                return '👶 **Aqua Tots**\n\n📞 **Phone**: <span class="phone-link" onclick="window.location.href=\'tel:1-844-627-8867\'">1-844-627-8867</span>\n🌐 **Website**: <a href="https://www.aquatots.com/" target="_blank">www.aquatots.com</a>\n📧 **Email**: <a href="mailto:info@aquatots.com">info@aquatots.com</a>\n\n**Programs**: Specializes in ages 2-5 with small class sizes. Facilities designed specifically for toddlers.\n\n**Ages**: 4 months to 12 years\n**Class Size**: 4:1 ratio\n**Specialties**: Parent-child classes, toddler development\n\nInterested in their parent-child classes or enrollment?';
+            } else if (lowerMessage.includes('emler')) {
+                return '🏆 **Emler Swim School**\n\n📞 **Phone**: <span class="phone-link" onclick="window.location.href=\'tel:1-855-232-2006\'">1-855-232-2006</span>\n🌐 **Website**: <a href="https://emlerswimschool.com/" target="_blank">emlerswimschool.com</a>\n📧 **Email**: <a href="mailto:info@emlerswimschool.com">info@emlerswimschool.com</a>\n\n**Programs**: Comprehensive curriculum with 90° heated pools! 12 free make-up lessons, 50 years experience.\n\n**Ages**: 2 months to adults\n**Class Size**: 4:1 ratio\n**Specialties**: SwimSure method, heated pools, flexible scheduling\n\nWant to know about pricing or find a location near you?';
+            } else if (lowerMessage.includes('safesplash')) {
+                return '💦 **Safesplash Swim School**\n\n📞 **Phone**: <span class="phone-link" onclick="window.location.href=\'tel:1-866-571-7714\'">1-866-571-7714</span>\n🌐 **Website**: <a href="https://www.safesplash.com/" target="_blank">www.safesplash.com</a>\n📧 **Email**: <a href="mailto:info@safesplash.com">info@safesplash.com</a>\n\n**Programs**: Family-friendly with flexible scheduling. Programs for all skill levels with convenient locations.\n\n**Ages**: 6 months to adults\n**Class Size**: 4-6 students\n**Specialties**: Busy families, all skill levels, weekend classes\n\nWould you like help finding a location or enrollment information?';
+            } else if (lowerMessage.includes('phone') || lowerMessage.includes('contact') || lowerMessage.includes('number')) {
+                return 'Here are all the contact numbers:\n\n🏊 **British Swim School**: <span class="phone-link" onclick="window.location.href=\'tel:1-800-795-7946\'">1-800-795-7946</span>\n👶 **Aqua Tots**: <span class="phone-link" onclick="window.location.href=\'tel:1-844-627-8867\'">1-844-627-8867</span>\n🏆 **Emler Swim School**: <span class="phone-link" onclick="window.location.href=\'tel:1-855-232-2006\'">1-855-232-2006</span>\n💦 **Safesplash**: <span class="phone-link" onclick="window.location.href=\'tel:1-866-571-7714\'">1-866-571-7714</span>\n\nWhich school would you like more information about?';
+            } else if (lowerMessage.includes('price') || lowerMessage.includes('cost')) {
+                return '💰 **Pricing Information**:\n\n**Group Lessons**: $15-25 per class\n**Private Lessons**: $40-60 per class\n**Package Discounts**: Available at most schools\n**Free Trials**: Many schools offer free trial lessons\n\n**British Swim School**: $20-30/group, $50-70/private\n**Aqua Tots**: $18-25/group, $45-60/private\n**Emler Swim School**: $22-32/group, $55-75/private\n**Safesplash**: $15-25/group, $40-60/private\n\nWould you like specific pricing for a particular school?';
+            } else if (lowerMessage.includes('review')) {
+                return 'Writing a review is easy! Focus on your personal experience:\n\n📝 What did your child learn?\n👥 How were the instructors?\n🏊 How\'s the facility?\n⏰ Was scheduling convenient?\n💰 Value for money?\n\nBe specific and honest - other parents appreciate detailed feedback! Click the "Write a Review" button to get started.';
+            } else if (lowerMessage.includes('help')) {
+                return 'I can help you with:\n\n🏊 Finding the right swim school\n📅 Understanding program options\n💰 Pricing information\n📞 Contact details and phone numbers\n✍️ Writing reviews\n📍 Location details\n\nWhat would you like to know more about?';
+            } else if (lowerMessage.includes('enroll') || lowerMessage.includes('sign up')) {
+                return 'To enroll, you\'ll need to:\n\n1️⃣ **Call the school directly** (click any phone number above)\n2️⃣ **Visit their website** (click any website link above)\n3️⃣ **Schedule a free trial** (most schools offer this)\n4️⃣ **Complete registration forms**\n\nWhich school are you interested in enrolling with? I can provide specific enrollment steps!';
+            } else {
+                return 'Thanks for your question! I can help you with:\n\n🏊 School information and contacts\n📞 Phone numbers and enrollment\n💰 Pricing and program details\n✍️ Review writing assistance\n\nWhat specific information would be helpful? You can ask about any school by name!';
+            }
+        }
+
+        function addBotMessage(message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'help-message bot-message';
+            messageDiv.innerHTML = `<div class="message-bubble">${message.replace(/\n/g, '<br>')}</div>`;
+            helpMessages.appendChild(messageDiv);
+            helpMessages.scrollTop = helpMessages.scrollHeight;
+        }
+
+        function addUserMessage(message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'help-message user-message';
+            messageDiv.innerHTML = `<div class="message-bubble">${message}</div>`;
+            helpMessages.appendChild(messageDiv);
+            helpMessages.scrollTop = helpMessages.scrollHeight;
+        }
+    </script>
+</body>
+</html>

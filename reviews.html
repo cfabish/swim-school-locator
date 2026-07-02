@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swim School Reviews</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Reviews-specific styles */
+        .reviews-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem 4rem;
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+        }
+
+        .reviews-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .reviews-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .filter-section {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: linear-gradient(135deg, #29b6f6 0%, #0288d1 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(41, 182, 246, 0.4);
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Add more reviews for scrolling demonstration */
+        .additional-reviews {
+            margin-top: 3rem;
+        }
+
+        .review-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .school-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .rating {
+            display: flex;
+            gap: 0.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .star {
+            color: #FFD700;
+            font-size: 1.2rem;
+        }
+
+        .star.empty {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .review-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        .reviewer-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .reviewer-name {
+            font-weight: 600;
+        }
+
+        .review-date {
+            font-size: 0.85rem;
+        }
+
+        .add-review-btn {
+            display: block;
+            margin: 0 auto 3rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .add-review-btn:hover {
+            background: linear-gradient(135deg, #29b6f6 0%, #0288d1 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(41, 182, 246, 0.4);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            background: linear-gradient(135deg, #29b6f6 0%, #0288d1 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(41, 182, 246, 0.4);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            max-width: 450px;
+            margin: 0;
+            padding: 0;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            animation: modalSlideIn 0.3s ease-out;
+            max-height: 85vh;
+            overflow-y: auto;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            cursor: move;
+        }
+
+        .modal-content.dragging {
+            cursor: grabbing;
+            user-select: none;
+        }
+
+        .modal-header {
+            cursor: move;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            background: rgba(135, 206, 235, 0.1);
+            border-radius: 20px 20px 0 0;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            color: #006994;
+            font-size: 1.5rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: #666;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
+
+        .form-group {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .form-group:last-child {
+            border-bottom: none;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: white;
+            color: #333;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4fc3f7;
+            box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.1);
+        }
+
+        .star-rating-input {
+            display: flex;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .star-input {
+            color: #ddd;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .star-input:hover,
+        .star-input.active {
+            color: #FFD700;
+            transform: scale(1.1);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            background: rgba(135, 206, 235, 0.05);
+            border-radius: 0 0 20px 20px;
+            position: sticky;
+            bottom: 0;
+        }
+
+        .cancel-btn,
+        .submit-btn {
+            flex: 1;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cancel-btn {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .cancel-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+            color: white;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #29b6f6 0%, #0288d1 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(41, 182, 246, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .reviews-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .filter-buttons {
+                justify-content: stretch;
+            }
+            
+            .filter-btn {
+                flex: 1;
+                text-align: center;
+            }
+
+            .modal-content {
+                margin: 10% 1rem;
+                max-width: none;
+            }
+
+            .modal-header,
+            .form-group,
+            .form-actions {
+                padding: 1rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Video Background -->
+    <video autoplay muted loop playsinline id="bg-video">
+        <source src="https://videos.pexels.com/video-files/853877/853877-hd_1920_1080_30fps.mp4" type="video/mp4">
+        <source src="https://videos.pexels.com/video-files/4825567/4825567-hd_1920_1080_25fps.mp4" type="video/mp4">
+    </video>
+    
+    <!-- Overlay for better text readability -->
+    <div class="video-overlay"></div>
+
+    <div class="reviews-container">
+        <header class="reviews-header">
+            <h1>Swim School Reviews</h1>
+            <p class="subtitle">Real experiences from parents and swimmers</p>
+        </header>
+
+        <section class="filter-section">
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All Schools</button>
+                <button class="filter-btn" data-filter="british">British Swim School</button>
+                <button class="filter-btn" data-filter="aqua">Aqua Tots</button>
+                <button class="filter-btn" data-filter="elmer">Emler Swim School</button>
+                <button class="filter-btn" data-filter="safesplash">Safesplash</button>
+            </div>
+        </section>
+
+        <button class="add-review-btn" id="openReviewModal">Write a Review</button>
+
+    <!-- Review Modal -->
+    <div id="reviewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Write a Review</h2>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <form id="reviewForm">
+                <div class="form-group">
+                    <label for="schoolSelect">Select Swim School:</label>
+                    <select id="schoolSelect" required>
+                        <option value="">Choose a swim school...</option>
+                        <option value="british">British Swim School</option>
+                        <option value="aqua">Aqua Tots</option>
+                        <option value="elmer">Emler Swim School</option>
+                        <option value="safesplash">Safesplash</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="reviewerName">Your Name:</label>
+                    <input type="text" id="reviewerName" required placeholder="Enter your name">
+                </div>
+
+                <div class="form-group">
+                    <label for="rating">Rating:</label>
+                    <div class="star-rating-input" id="starRating">
+                        <span class="star-input" data-rating="1">★</span>
+                        <span class="star-input" data-rating="2">★</span>
+                        <span class="star-input" data-rating="3">★</span>
+                        <span class="star-input" data-rating="4">★</span>
+                        <span class="star-input" data-rating="5">★</span>
+                    </div>
+                    <input type="hidden" id="ratingValue" value="0" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="reviewText">Your Review:</label>
+                    <textarea id="reviewText" required placeholder="Share your experience..." rows="5"></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="cancel-btn" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="submit-btn">Submit Review</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+        <main class="reviews-grid">
+            <!-- British Swim School Reviews -->
+            <article class="review-card" data-school="british">
+                <div class="school-badge">British Swim School</div>
+                <div class="rating">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                </div>
+                <p class="review-text">"The instructors are incredibly patient and knowledgeable. My daughter went from being afraid of water to swimming independently in just 3 months!"</p>
+                <div class="reviewer-info">
+                    <span class="reviewer-name">Sarah M.</span>
+                    <span class="review-date">2 weeks ago</span>
+                </div>
+            </article>
+
+            <article class="review-card" data-school="british">
+                <div class="school-badge">British Swim School</div>
+                <div class="rating">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star empty">★</span>
+                </div>
+                <p class="review-text">"Great program with focus on water safety. The small class sizes ensure personalized attention. Highly recommend for beginners."</p>
+                <div class="reviewer-info">
+                    <span class="reviewer-name">Mike T.</span>
+                    <span class="review-date">1 month ago</span>
+                </div>
+            </article>
+
+            <!-- Aqua Tots Reviews -->
+            <article class="review-card" data-school="aqua">
+                <div class="school-badge">Aqua Tots</div>
+                <div class="rating">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                </div>
+                <p class="review-text">"Perfect for my toddler! The parent-child classes are fun and educational. The facilities are clean and the water temperature is perfect for little ones."</p>
+                <div class="reviewer-info">
+                    <span class="reviewer-name">Jennifer L.</span>
+                    <span class="review-date">3 days ago</span>
+                </div>
+            </article>
+
+            <article class="review-card" data-school="aqua">
+                <div class="school-badge">Aqua Tots</div>
+                <div class="rating">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star empty">★</span>
+                </div>
+                <p class="review-text">"Good program but scheduling can be challenging. The instructors are wonderful with kids though!"</p>
+                <div class="reviewer-info">
+                    <span class="reviewer-name">David R.</span>
+                    <span class="review-date">2 weeks ago</span>
+                </div>
+            </article>
+
+            <!-- Emler Swim School Reviews -->
+            <article class="review-card" data-school="elmer">
+                <div class="school-badge">Emler Swim School</div>
+                <div class="rating">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                </div>
+                <p class="review-text">"Outstanding program! The SwimSure curriculum really works. My son learned proper technique and gained so much confidence. The 90° pools make it comfortable year-round."</p>
+                <div class="reviewer-info">
+                    <span class="reviewer-name">Amanda K.</span>
+                    <span class="review-date">1 week ago</span>
+                </div>
+            </article>
+
+            <article class="review-card" data-school="elmer">
+                <div class="school-badge">Emler Swim School</div>
+                <div class="rating">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                </div>
+                <p class="review-text">"The free trial lesson convinced us! Professional instructors, clean facilities, and they really focus on water safety first. Worth every penny."</p>
+                <div class="reviewer-info">
+                    <span class="reviewer-name">Robert H.</span>
+                    <span class="review-date">3 weeks ago</span>
+                </div>
+            </article>
+
+            <!-- Safesplash Reviews -->
+            <article class="review-card" data-school="safesplash">
+                <div class="school-badge">Safesplash</div>
+                <div class="rating">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star empty">★</span>
+                </div>
+                <p class="review-text">"Great experience overall. The instructors are patient and the progress tracking system helps parents see improvement. Flexible scheduling is a plus!"</p>
+                <div class="reviewer-info">
+                    <span class="reviewer-name">Lisa W.</span>
+                    <span class="review-date">4 days ago</span>
+                </div>
+            </article>
+
+            <article class="review-card" data-school="safesplash">
+                <div class="school-badge">Safesplash</div>
+                <div class="rating">
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                    <span class="star">★</span>
+                </div>
+                <p class="review-text">"Both my kids love their lessons! The program adapts to different skill levels and the instructors make learning fun. Highly recommend!"</p>
+                <div class="reviewer-info">
+                    <span class="reviewer-name">Tom B.</span>
+                    <span class="review-date">1 month ago</span>
+                </div>
+            </article>
+        </main>
+
+        <!-- Additional Reviews Section for Scrolling -->
+        <section class="additional-reviews">
+            <h2 style="text-align: center; margin-bottom: 2rem; color: #000000;">More Parent Reviews</h2>
+            <div class="reviews-grid">
+                <!-- Additional British Swim School Reviews -->
+                <article class="review-card" data-school="british">
+                    <div class="school-badge">British Swim School</div>
+                    <div class="rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                    <p class="review-text">"The survival skills taught here are invaluable. My 6-year-old learned what to do if he falls in water - life-saving knowledge!"</p>
+                    <div class="reviewer-info">
+                        <span class="reviewer-name">Maria G.</span>
+                        <span class="review-date">2 months ago</span>
+                    </div>
+                </article>
+
+                <article class="review-card" data-school="british">
+                    <div class="school-badge">British Swim School</div>
+                    <div class="rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star empty">★</span>
+                    </div>
+                    <p class="review-text">"Good program but can be expensive. The quality of instruction is excellent though."</p>
+                    <div class="reviewer-info">
+                        <span class="reviewer-name">James L.</span>
+                        <span class="review-date">3 months ago</span>
+                    </div>
+                </article>
+
+                <!-- Additional Aqua Tots Reviews -->
+                <article class="review-card" data-school="aqua">
+                    <div class="school-badge">Aqua Tots</div>
+                    <div class="rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                    <p class="review-text">"The baby swimming classes are adorable! My 8-month-old loves the water and the instructors are so patient with little ones."</p>
+                    <div class="reviewer-info">
+                        <span class="reviewer-name">Nicole R.</span>
+                        <span class="review-date">1 month ago</span>
+                    </div>
+                </article>
+
+                <article class="review-card" data-school="aqua">
+                    <div class="school-badge">Aqua Tots</div>
+                    <div class="rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star empty">★</span>
+                    </div>
+                    <p class="review-text">"Nice facility but parking can be challenging during peak hours. The program itself is great."</p>
+                    <div class="reviewer-info">
+                        <span class="reviewer-name">Steven M.</span>
+                        <span class="review-date">2 months ago</span>
+                    </div>
+                </article>
+
+                <!-- Additional Emler Reviews -->
+                <article class="review-card" data-school="elmer">
+                    <div class="school-badge">Emler Swim School</div>
+                    <div class="rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                    <p class="review-text">"The make-up lesson policy is fantastic! With kids' schedules, flexibility is so important and Emler delivers."</p>
+                    <div class="reviewer-info">
+                        <span class="reviewer-name">Karen P.</span>
+                        <span class="review-date">3 weeks ago</span>
+                    </div>
+                </article>
+
+                <article class="review-card" data-school="elmer">
+                    <div class="school-badge">Emler Swim School</div>
+                    <div class="rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star empty">★</span>
+                    </div>
+                    <p class="review-text">"Great instructors but the cost adds up with multiple children. Wish they had better sibling discounts."</p>
+                    <div class="reviewer-info">
+                        <span class="reviewer-name">Brian T.</span>
+                        <span class="review-date">1 month ago</span>
+                    </div>
+                </article>
+
+                <!-- Additional Safesplash Reviews -->
+                <article class="review-card" data-school="safesplash">
+                    <div class="school-badge">Safesplash</div>
+                    <div class="rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                    <p class="review-text">"The weekend classes work perfectly for our family schedule. Kids have made great progress!"</p>
+                    <div class="reviewer-info">
+                        <span class="reviewer-name">Laura H.</span>
+                        <span class="review-date">2 weeks ago</span>
+                    </div>
+                </article>
+
+                <article class="review-card" data-school="safesplash">
+                    <div class="school-badge">Safesplash</div>
+                    <div class="rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star empty">★</span>
+                    </div>
+                    <p class="review-text">"Good overall experience. Sometimes the classes feel a bit crowded but the instructors handle it well."</p>
+                    <div class="reviewer-info">
+                        <span class="reviewer-name">Mark D.</span>
+                        <span class="review-date">3 weeks ago</span>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <div style="text-align: center;">
+            <a href="index.html" class="back-link">← Back to Swim School Locator</a>
+        </div>
+    </div>
+
+    <!-- Help Bot -->
+    <div class="help-bot">
+        <div class="help-chat" id="helpChat">
+            <div class="help-header">
+                <h3>🏊 Swim School Helper</h3>
+                <button class="help-close" id="helpClose">&times;</button>
+            </div>
+            <div class="help-messages" id="helpMessages">
+                <div class="help-message bot-message">
+                    <div class="message-bubble">
+                        Hi! I'm your Swim School Helper. I can help you write reviews, answer questions about swim schools, or assist with finding the right program. How can I help you today?
+                    </div>
+                </div>
+            </div>
+            <div class="quick-actions">
+                <button class="quick-action-btn" data-action="schools">Tell me about the schools</button>
+                <button class="quick-action-btn" data-action="programs">What programs are available?</button>
+                <button class="quick-action-btn" data-action="review">Help me write a review</button>
+                <button class="quick-action-btn" data-action="contact">Need contact information</button>
+            </div>
+            <div class="help-input">
+                <input type="text" id="helpInput" placeholder="Type your question...">
+                <button id="helpSend">Send</button>
+            </div>
+        </div>
+        <div class="help-bubble" id="helpBubble">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12c0 1.54.36 3 .97 4.29L1 23l6.71-1.97C9.02 21.64 10.46 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-1.3 0-2.54-.25-3.68-.7l-4.27 1.26 1.26-4.27C4.25 14.54 4 13.3 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8z"/>
+                <path d="M8 12h8v2H8z"/>
+                <path d="M8 8h8v2H8z"/>
+                <path d="M8 16h5v2H8z"/>
+            </svg>
+        </div>
+    </div>
+
+    <script>
+        // Filter functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const reviewCards = document.querySelectorAll('.review-card');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                this.classList.add('active');
+
+                const filter = this.getAttribute('data-filter');
+
+                reviewCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-school') === filter) {
+                        card.style.display = 'block';
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        }, 10);
+                    } else {
+                        card.style.opacity = '0';
+                        card.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            card.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+
+        // Modal functionality
+        const modal = document.getElementById('reviewModal');
+        const openModalBtn = document.getElementById('openReviewModal');
+        const closeModalBtn = document.getElementById('closeModal');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const reviewForm = document.getElementById('reviewForm');
+        const starInputs = document.querySelectorAll('.star-input');
+        const ratingValue = document.getElementById('ratingValue');
+        const modalContent = document.querySelector('.modal-content');
+        const modalHeader = document.querySelector('.modal-header');
+
+        // Drag functionality
+        let isDragging = false;
+        let currentX;
+        let currentY;
+        let initialX;
+        let initialY;
+        let xOffset = 0;
+        let yOffset = 0;
+
+        function dragStart(e) {
+            if (e.type === "touchstart") {
+                initialX = e.touches[0].clientX - xOffset;
+                initialY = e.touches[0].clientY - yOffset;
+            } else {
+                initialX = e.clientX - xOffset;
+                initialY = e.clientY - yOffset;
+            }
+
+            if (e.target === modalContent || e.target === modalHeader || modalHeader.contains(e.target)) {
+                isDragging = true;
+                modalContent.classList.add('dragging');
+            }
+        }
+
+        function dragEnd(e) {
+            initialX = currentX;
+            initialY = currentY;
+            isDragging = false;
+            modalContent.classList.remove('dragging');
+        }
+
+        function drag(e) {
+            if (isDragging) {
+                e.preventDefault();
+                
+                if (e.type === "touchmove") {
+                    currentX = e.touches[0].clientX - initialX;
+                    currentY = e.touches[0].clientY - initialY;
+                } else {
+                    currentX = e.clientX - initialX;
+                    currentY = e.clientY - initialY;
+                }
+
+                xOffset = currentX;
+                yOffset = currentY;
+
+                modalContent.style.transform = `translate(calc(-50% + ${currentX}px), calc(-50% + ${currentY}px))`;
+            }
+        }
+
+        // Add drag event listeners
+        modalContent.addEventListener('mousedown', dragStart);
+        document.addEventListener('mouseup', dragEnd);
+        document.addEventListener('mousemove', drag);
+
+        // Touch events for mobile
+        modalContent.addEventListener('touchstart', dragStart);
+        document.addEventListener('touchend', dragEnd);
+        document.addEventListener('touchmove', drag);
+
+        // Reset position when modal opens
+        function resetModalPosition() {
+            xOffset = 0;
+            yOffset = 0;
+            modalContent.style.transform = 'translate(-50%, -50%)';
+        }
+
+        // Open modal
+        openModalBtn.addEventListener('click', function() {
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            resetModalPosition();
+        });
+
+        // Close modal functions
+        function closeModal() {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            reviewForm.reset();
+            resetStars();
+        }
+
+        closeModalBtn.addEventListener('click', closeModal);
+        cancelBtn.addEventListener('click', closeModal);
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Star rating functionality
+        starInputs.forEach(star => {
+            star.addEventListener('click', function() {
+                const rating = parseInt(this.getAttribute('data-rating'));
+                ratingValue.value = rating;
+                updateStars(rating);
+            });
+
+            star.addEventListener('mouseenter', function() {
+                const rating = parseInt(this.getAttribute('data-rating'));
+                updateStars(rating);
+            });
+        });
+
+        document.getElementById('starRating').addEventListener('mouseleave', function() {
+            const currentRating = parseInt(ratingValue.value);
+            updateStars(currentRating);
+        });
+
+        function updateStars(rating) {
+            starInputs.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        function resetStars() {
+            ratingValue.value = 0;
+            updateStars(0);
+        }
+
+        // Form submission
+        reviewForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                school: document.getElementById('schoolSelect').value,
+                name: document.getElementById('reviewerName').value,
+                rating: ratingValue.value,
+                review: document.getElementById('reviewText').value
+            };
+
+            // Validate rating
+            if (formData.rating === '0') {
+                alert('Please select a star rating');
+                return;
+            }
+
+            // Create new review card
+            addNewReview(formData);
+            
+            // Close modal and reset form
+            closeModal();
+            
+            // Show success message
+            showSuccessMessage();
+        });
+
+        function addNewReview(data) {
+            const schoolNames = {
+                'british': 'British Swim School',
+                'aqua': 'Aqua Tots',
+                'elmer': 'Emler Swim School',
+                'safesplash': 'Safesplash'
+            };
+
+            const reviewsGrid = document.querySelector('.reviews-grid');
+            const newReview = document.createElement('article');
+            newReview.className = 'review-card';
+            newReview.setAttribute('data-school', data.school);
+            
+            const stars = '★'.repeat(parseInt(data.rating)) + '☆'.repeat(5 - parseInt(data.rating));
+            
+            newReview.innerHTML = `
+                <div class="school-badge">${schoolNames[data.school]}</div>
+                <div class="rating">
+                    ${stars.split('').map(star => `<span class="star">${star === '★' ? '★' : '★ empty'}</span>`).join('')}
+                </div>
+                <p class="review-text">"${data.review}"</p>
+                <div class="reviewer-info">
+                    <span class="reviewer-name">${data.name}</span>
+                    <span class="review-date">Just now</span>
+                </div>
+            `;
+
+            // Add to top of reviews
+            reviewsGrid.insertBefore(newReview, reviewsGrid.firstChild);
+            
+            // Add animation
+            newReview.style.opacity = '0';
+            newReview.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                newReview.style.opacity = '1';
+                newReview.style.transform = 'translateY(0)';
+            }, 100);
+
+            // Re-apply current filter
+            const activeFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
+            if (activeFilter !== 'all' && activeFilter !== data.school) {
+                newReview.style.display = 'none';
+            }
+        }
+
+        function showSuccessMessage() {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success-message';
+            successDiv.textContent = 'Thank you! Your review has been added successfully.';
+            successDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 10px;
+                box-shadow: 0 4px 20px rgba(41, 182, 246, 0.4);
+                z-index: 2000;
+                animation: slideInRight 0.3s ease-out;
+            `;
+            
+            document.body.appendChild(successDiv);
+            
+            setTimeout(() => {
+                successDiv.style.animation = 'slideOutRight 0.3s ease-out';
+                setTimeout(() => {
+                    document.body.removeChild(successDiv);
+                }, 300);
+            }, 3000);
+        }
+
+        // Add smooth transitions
+        reviewCards.forEach(card => {
+            card.style.transition = 'all 0.3s ease';
+        });
+
+        // Add animation keyframes
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from {
+                    opacity: 0;
+                    transform: translateX(100px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+            
+            @keyframes slideOutRight {
+                from {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+                to {
+                    opacity: 0;
+                    transform: translateX(100px);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Help Bot Functionality
+        const helpBubble = document.getElementById('helpBubble');
+        const helpChat = document.getElementById('helpChat');
+        const helpClose = document.getElementById('helpClose');
+        const helpInput = document.getElementById('helpInput');
+        const helpSend = document.getElementById('helpSend');
+        const helpMessages = document.getElementById('helpMessages');
+
+        // Toggle help chat
+        helpBubble.addEventListener('click', function() {
+            helpChat.classList.toggle('active');
+            if (helpChat.classList.contains('active')) {
+                helpInput.focus();
+            }
+        });
+
+        // Close help chat
+        helpClose.addEventListener('click', function() {
+            helpChat.classList.remove('active');
+        });
+
+        // Quick action buttons
+        document.querySelectorAll('.quick-action-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const action = this.getAttribute('data-action');
+                handleQuickAction(action);
+            });
+        });
+
+        function handleQuickAction(action) {
+            let response = '';
+            
+            switch(action) {
+                case 'schools':
+                    response = 'We have 4 excellent swim schools:\n\n🏊 British Swim School - Focus on water safety and survival skills\n👶 Aqua Tots - Specializes in infant and toddler swimming\n🏆 Emler Swim School - Comprehensive curriculum with heated pools\n💦 Safesplash - Flexible scheduling and family-friendly programs\n\nWhich school interests you most? I can provide specific contact details!';
+                    break;
+                case 'programs':
+                    response = 'Our schools offer various programs:\n\n👶 Parent & Baby (2-36 months)\n👧 Toddler Classes (3 years)\n👦 Kids Lessons (4+ years)\n🏊 Advanced Training (5+ years)\n👨‍👩‍👧‍👦 Adult Swimming Lessons\n🎉 Swim Birthday Parties\n\nEach school has unique approaches - would you like details about a specific program or contact information for enrollment?';
+                    break;
+                case 'review':
+                    response = 'I\'d be happy to help you write a great review! Here are some tips:\n\n✨ Mention specific instructors or classes\n📅 Include how long you\'ve been attending\n🎯 Talk about progress your child has made\n💰 Comment on value for money\n🏊 Mention facilities (cleanliness, temperature, etc.)\n\nClick the "Write a Review" button to get started, and I can help you craft the perfect review!';
+                    break;
+                case 'contact':
+                    response = 'I can provide contact information for any school! Which school would you like contact details for?\n\n🏊 British Swim School\n👶 Aqua Tots\n🏆 Emler Swim School\n💦 Safesplash\n\nJust let me know which one and I\'ll give you their phone number, website, and enrollment information!';
+                    break;
+            }
+            
+            addBotMessage(response);
+        }
+
+        // Send message
+        function sendMessage() {
+            const message = helpInput.value.trim();
+            if (message) {
+                addUserMessage(message);
+                helpInput.value = '';
+                
+                // Simulate bot response
+                setTimeout(() => {
+                    const response = generateBotResponse(message);
+                    addBotMessage(response);
+                }, 1000);
+            }
+        }
+
+        helpSend.addEventListener('click', sendMessage);
+        helpInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        function generateBotResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            if (lowerMessage.includes('british')) {
+                return '🏊 **British Swim School**\n\n📞 **Phone**: <span class="phone-link" onclick="window.location.href=\'tel:1-800-795-7946\'">1-800-795-7946</span>\n🌐 **Website**: <a href="https://www.britishswimschool.com/" target="_blank">www.britishswimschool.com</a>\n📧 **Email**: <a href="mailto:info@britishswimschool.com">info@britishswimschool.com</a>\n\n**Programs**: Water safety focus, survival skills first, then swimming techniques. Great for beginners and nervous swimmers.\n\n**Ages**: All ages (3 months to adults)\n**Class Size**: 4-6 students\n**Specialties**: Survival skills, nervous swimmers\n\nWould you like enrollment information or class schedules?';
+            } else if (lowerMessage.includes('aqua tots')) {
+                return '👶 **Aqua Tots**\n\n📞 **Phone**: <span class="phone-link" onclick="window.location.href=\'tel:1-844-627-8867\'">1-844-627-8867</span>\n🌐 **Website**: <a href="https://www.aquatots.com/" target="_blank">www.aquatots.com</a>\n📧 **Email**: <a href="mailto:info@aquatots.com">info@aquatots.com</a>\n\n**Programs**: Specializes in ages 2-5 with small class sizes. Facilities designed specifically for toddlers.\n\n**Ages**: 4 months to 12 years\n**Class Size**: 4:1 ratio\n**Specialties**: Parent-child classes, toddler development\n\nInterested in their parent-child classes or enrollment?';
+            } else if (lowerMessage.includes('emler')) {
+                return '🏆 **Emler Swim School**\n\n📞 **Phone**: <span class="phone-link" onclick="window.location.href=\'tel:1-855-232-2006\'">1-855-232-2006</span>\n🌐 **Website**: <a href="https://emlerswimschool.com/" target="_blank">emlerswimschool.com</a>\n📧 **Email**: <a href="mailto:info@emlerswimschool.com">info@emlerswimschool.com</a>\n\n**Programs**: Comprehensive curriculum with 90° heated pools! 12 free make-up lessons, 50 years experience.\n\n**Ages**: 2 months to adults\n**Class Size**: 4:1 ratio\n**Specialties**: SwimSure method, heated pools, flexible scheduling\n\nWant to know about pricing or find a location near you?';
+            } else if (lowerMessage.includes('safesplash')) {
+                return '💦 **Safesplash Swim School**\n\n📞 **Phone**: <span class="phone-link" onclick="window.location.href=\'tel:1-866-571-7714\'">1-866-571-7714</span>\n🌐 **Website**: <a href="https://www.safesplash.com/" target="_blank">www.safesplash.com</a>\n📧 **Email**: <a href="mailto:info@safesplash.com">info@safesplash.com</a>\n\n**Programs**: Family-friendly with flexible scheduling. Programs for all skill levels with convenient locations.\n\n**Ages**: 6 months to adults\n**Class Size**: 4-6 students\n**Specialties**: Busy families, all skill levels, weekend classes\n\nWould you like help finding a location or enrollment information?';
+            } else if (lowerMessage.includes('phone') || lowerMessage.includes('contact') || lowerMessage.includes('number')) {
+                return 'Here are all the contact numbers:\n\n🏊 **British Swim School**: <span class="phone-link" onclick="window.location.href=\'tel:1-800-795-7946\'">1-800-795-7946</span>\n👶 **Aqua Tots**: <span class="phone-link" onclick="window.location.href=\'tel:1-844-627-8867\'">1-844-627-8867</span>\n🏆 **Emler Swim School**: <span class="phone-link" onclick="window.location.href=\'tel:1-855-232-2006\'">1-855-232-2006</span>\n💦 **Safesplash**: <span class="phone-link" onclick="window.location.href=\'tel:1-866-571-7714\'">1-866-571-7714</span>\n\nWhich school would you like more information about?';
+            } else if (lowerMessage.includes('review') || lowerMessage.includes('write')) {
+                return 'Writing a helpful review is important for other parents! Focus on:\n\n🎯 **Specific experiences** - what happened in class?\n👨‍🏫 **Instructor quality** - patient, knowledgeable, fun?\n🏊 **Child\'s progress** - skills gained, confidence built\n🏢 **Facility** - clean, warm, well-organized?\n⏰ **Scheduling** - easy to book, flexible?\n💰 **Value** - worth the investment?\n\nThe more detailed your review, the more helpful it is!';
+            } else if (lowerMessage.includes('help')) {
+                return 'I can help you with:\n\n✍️ Writing detailed reviews\n🏊 School contact information\n📞 Phone numbers and enrollment\n📝 Review templates and tips\n⭐ Rating guidance\n\nWhat would you like help with?';
+            } else {
+                return 'I\'m here to help you write reviews and connect with schools! You can ask me about:\n\n📝 Review writing assistance\n🏊 Specific swim school details\n📞 Contact information and phone numbers\n⭐ How to choose a rating\n\nWhat specific help do you need?';
+            }
+        }
+
+        function addBotMessage(message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'help-message bot-message';
+            messageDiv.innerHTML = `<div class="message-bubble">${message.replace(/\n/g, '<br>')}</div>`;
+            helpMessages.appendChild(messageDiv);
+            helpMessages.scrollTop = helpMessages.scrollHeight;
+        }
+
+        function addUserMessage(message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'help-message user-message';
+            messageDiv.innerHTML = `<div class="message-bubble">${message}</div>`;
+            helpMessages.appendChild(messageDiv);
+            helpMessages.scrollTop = helpMessages.scrollHeight;
+        }
+    </script>
+
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="reviews.html" class="nav-link active">Reviews</a>
+        <a href="map.html" class="nav-link">Map</a>
+    </nav>
+
+    <footer>
+        <p>&copy; 2024 Swim School Selector. Connecting families with quality swimming education.</p>
+    </footer>
+</body>
+</html>
